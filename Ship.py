@@ -17,7 +17,6 @@ class Ship():
         #   Define shape parameters based on shape object
         self.mass = shape.mass
         self.radius = shape.radius
-        self.barrel_length = shape.barrel_length
 
 class ShipMovement():
     def __init__(self, spin_speed, max_speed, friction):
