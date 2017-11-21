@@ -4,7 +4,7 @@ import numpy as np
 import math
 
 class Player():
-    def __init__(self, player_id, ship, controls, position, direction):
+    def __init__(self, player_id, ship, controls, pose):
         #   Define player id
         self.id = player_id
 
@@ -17,24 +17,9 @@ class Player():
         #   TODO design weapon object
         self.ship = ship
         self.weapon = ship.starting_weapon
+        self.pose = pose
 
-        #   Define starting orientation based on initialization inputs
-        self.pos = np.assarray(position)
-        self.direction = np.asarray(direction)
+    def update(self, dt):
+        self.pose.update(dt)
 
-    def rotate_cc(self, amt):
-        """ Rotates the ship some amount counterclockwise.
-        Input: rotation amount in radians. """
 
-        rot_mat = np.asarray([[math.cos(amt), -math.sin(amt)],
-                            [math.sin(amt), math.cos(amt)]])
-        new_direction = np.matmul(rot_mat, self.direction)
-        self.direction = new_direction/np.norm(new_direction)
-
-    def spin_step(self, dt):
-        """ Updates the rotational orientation of the ship based on its current
-        spinning speed and a time step.
-        Input: time difference since last update, in seconds. """
-
-        rot_amt = self.ship.spin_speed * dt
-        self.rotate_cc(rot_amt)
