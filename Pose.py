@@ -1,13 +1,15 @@
 #!/usr/bin/env python
 
-def Pose():
-    def __init__(self, position=(0,0), velocity=(0,0), direction=(0,0), spin_speed=0):
-        """ Position vector in world frame in pixels
-            Velocity vector in world frame in pixels/second
-            Direction unit vector in world frame
-            Angular velocity in radians/second """
+import numpy as np
+
+class Pose:
+    def __init__(self, pos=(0,0), vel=(0,0), direction=(0,0), spin_speed=0):
+        """ pos: Position vector in world frame in pixels
+            vel: Velocity vector in world frame in pixels/second
+            direction: Direction unit vector in world frame
+            spin_speed: Angular velocity in radians/second """
         self.pos = np.asarray(pos)
-        self.vel = np.asarray(velocity)
+        self.vel = np.asarray(vel)
         self.direction = np.asarray(direction)
         self.spin_speed = spin_speed
 
