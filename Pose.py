@@ -9,9 +9,9 @@ class Pose:
             vel: Velocity vector in world frame in pixels/second
             direction: Direction unit vector in world frame
             spin_speed: Angular velocity in radians/second """
-        self.pos = np.asarray(pos)
-        self.vel = np.asarray(vel)
-        self.direction = np.asarray(direction)
+        self.pos = np.asarray(pos).astype(float)
+        self.vel = np.asarray(vel).astype(float)
+        self.direction = np.asarray(direction).astype(float)
         self.spin_speed = spin_speed
 
     def getPose(self, **args):
