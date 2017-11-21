@@ -31,7 +31,7 @@ class Player():
         self.chargeTime = min(self.chargeTime+dt, self.weapon.maxCharge)
         if self.weapon.autofire and self.chargeTime == self.weapon.maxCharge:
             self.shoot(dt)
-    
+
     def shoot(self, dt):
         """ Fire a weapon if enough cooldown time has elapsed. """
         if self.chargeTime < 0:
@@ -47,3 +47,28 @@ class Player():
         for bullet in bullets:
             velocity -= bullet.pose.vel*bullet.mass/self.ship.mass
         return velocity
+
+class Controls():
+    def __init__(self, key_list):
+        self.shoot_key = key_list[0]
+
+    def key_down(self, key):
+        """ Checks to see whether a given key is held down. """
+        pressed = pygame.key.get_pressed()
+        return pressed[key]
+
+    def key_press(self, key):
+        """ Checks to see whether a given key has been pressed
+        in the time step. """
+        for event in pygame.event.get():
+            if event.type == pygame.KEYDOWN and event.key == key:
+                return True
+        return False
+
+    def key_release(self, key):
+        """ Checks to see whether a given key has been released
+        in the time step. """
+        for event in pygame.event.get():
+            if event.type == pygame.KEYUP and event.key == key:
+                return True
+        return False
