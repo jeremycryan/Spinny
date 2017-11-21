@@ -24,5 +24,26 @@ class Player():
         self.pose.update(dt)
 
 class Controls():
-    def __init__():
-        pass
+    def __init__(self, key_list):
+        self.shoot_key = key_list[0]
+
+    def key_down(self, key):
+        """ Checks to see whether a given key is held down. """
+        pressed = pygame.key.get_pressed()
+        return pressed[key]
+
+    def key_press(self, key):
+        """ Checks to see whether a given key has been pressed
+        in the time step. """
+        for event in pygame.event.get():
+            if event.type == pygame.KEYDOWN and event.key == key:
+                return True
+        return False
+
+    def key_release(self, key):
+        """ Checks to see whether a given key has been released
+        in the time step. """
+        for event in pygame.event.get():
+            if event.type == pygame.KEYUP and event.key == key:
+                return True
+        return False

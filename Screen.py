@@ -32,7 +32,6 @@ class Screen():
         radius = self.global_scale_to_screen(level, player.ship.radius)
         barrel_length = self.global_scale_to_screen(level, player.ship.barrel_length)
         gun_tip_pos = (barrel_length * direction) + pos
-        print(pos, direction)
 
         #   Cast parameters to ints so pygame doesn't shit itself
         pos = pos.astype(int)
