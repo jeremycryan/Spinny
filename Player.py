@@ -2,6 +2,7 @@
 
 import numpy as np
 import math
+import pygame
 
 class Player():
     def __init__(self, player_id, ship, controls, pose):
@@ -22,4 +23,6 @@ class Player():
     def update(self, dt):
         self.pose.update(dt)
 
-
+class Controls():
+    def __init__():
+        pass

@@ -7,7 +7,7 @@ class Ship():
 
         #   Define weapon based on weapon object
         #   TODO design weapon object
-        self.weapon = starting_weapon
+        self.starting_weapon = starting_weapon
 
         #   Define movement parameters based on movement object
         self.spin_speed = movement.spin_speed
@@ -26,7 +26,7 @@ class ShipMovement():
         self.max_speed = max_speed
         self.friction = friction
 
-class ShipShape()
+class ShipShape():
     def __init__(self, mass, radius, barrel_length):
         #   Define shape parameters based on inputs
         self.mass = mass

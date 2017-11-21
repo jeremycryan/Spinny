@@ -1,6 +1,7 @@
 #!/usr/bin/env python
 
 import pygame
+import numpy as np
 from Constants import *
 
 class Screen():
@@ -16,28 +17,36 @@ class Screen():
         Inputs: game object. """
         #   TODO this
 
+        self.disp.fill((0, 0, 0))
         for player in game.players:
-            self.render_player(player)
+            self.render_player(game.cur_level, player)
         self.flip()
 
-    def render_player(self, player):
+    def render_player(self, level, player):
         """ Draws a player on the screen.
         Inputs: player object """
 
         #   Unpack necessary parameters, convert to screen frame
-        pos = global_pos_to_screen(player.pose.pos)
-        direction = player.pos.direction
-        radius = global_scale_to_screen(player.ship.radius)
-        barrel_length = global_scale_to_screen(player.ship.barrel_length)
-        gun_tip_pos = barrel_length * direction + pos
+        pos = self.global_pos_to_screen(level, player.pose.pos)
+        direction = player.pose.direction
+        radius = self.global_scale_to_screen(level, player.ship.radius)
+        barrel_length = self.global_scale_to_screen(level, player.ship.barrel_length)
+        gun_tip_pos = (barrel_length * direction) + pos
+        print(pos, direction)
+
+        #   Cast parameters to ints so pygame doesn't shit itself
+        pos = pos.astype(int)
+        gun_tip_pos = gun_tip_pos.astype(int)
+        radius = int(radius)
+        barrel_length = int(barrel_length)
 
         #   Barrel width is currently arbitrary number
-        barrel_width = global_scale_to_screen(5.0)
+        barrel_width = int(self.global_scale_to_screen(level, 15.0))
 
         #   TODO change color based on player
         #   TODO Use actual sprites
-        body_color = (210, 140, 100)
-        gun_color = (180, 120, 80)
+        gun_color = (200, 100, 100)
+        body_color = (255, 150, 150)
         pygame.draw.circle(self.disp, body_color, pos, radius)
         pygame.draw.line(self.disp, gun_color, pos, gun_tip_pos, barrel_width)
 

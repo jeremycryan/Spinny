@@ -1,9 +1,10 @@
 #!/usr/bin/env python
 
 import numpy as np
+import math
 
 class Pose:
-    def __init__(self, pos=(0,0), vel=(0,0), direction=(0,0), spin_speed=0):
+    def __init__(self, pos=(0,0), vel=(0,0), direction=(1,0), spin_speed=0):
         """ pos: Position vector in world frame in pixels
             vel: Velocity vector in world frame in pixels/second
             direction: Direction unit vector in world frame
@@ -32,7 +33,7 @@ class Pose:
 
     def rotate(self, angle):
         """ Rotates the pose counterclockwise by an angle in radians. """
-        rot_mat = np.asarray([[math.cos(amt), -math.sin(amt)],
-                            [math.sin(amt), math.cos(amt)]])
+        rot_mat = np.asarray([[math.cos(angle), -math.sin(angle)],
+                            [math.sin(angle), math.cos(angle)]])
         new_direction = rot_mat.dot(self.direction)
-        self.direction = new_direction/np.norm(new_direction)
+        self.direction = new_direction/np.linalg.norm(new_direction)
