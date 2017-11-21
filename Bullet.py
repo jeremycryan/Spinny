@@ -8,3 +8,6 @@ class Bullet:
 
     def update(self, dt):
         self.pose.update(dt)
+
+    def __repr__(self):
+        return("Radius: %s, Mass: %s, Pose: %s") % (self.radius, self.mass, self.pose)

@@ -26,8 +26,7 @@ class ShipMovement():
         self.friction = friction
 
 class ShipShape():
-    def __init__(self, mass, radius, barrel_length):
+    def __init__(self, mass, radius):
         #   Define shape parameters based on inputs
         self.mass = mass
         self.radius = radius
-        self.barrel_length = barrel_length

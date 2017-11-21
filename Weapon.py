@@ -1,5 +1,8 @@
 #!/usr/bin/env python
 
+from Bullet import *
+
+
 # TODO: Subweapons don't support different fire rates
 
 class Weapon():
@@ -15,7 +18,7 @@ class Weapon():
             max_charge: Amount of time the weapon can be charged up
             speed_charge: Ratio of speed increase to charge time (pixels/second^2)
             radius_charge: Ratio of size increase to charge time (pixels/second)
-            mass_charge: Ratio of mass increase to charge 
+            mass_charge: Ratio of mass increase to charge
             barrel_length: Length of gun barrel relative to ship center in pixels
             spin_speed: Angular velocity of bullet in radians/second
             subweapons: Array of other weapons built into this weapon
@@ -48,11 +51,10 @@ class Weapon():
         pose.translate(pose.direction*self.barrel_length)
         # Velocity
         speed = self.speed + charge*self.speed_charge
-        pose.velocity = pose.direction*speed
+        pose.vel = pose.direction*speed
         # Radius
         radius = self.radius + charge*self.radius_charge
         # Mass
         mass = self.mass + charge*self.mass_charge
-        bullets += Bullet(radius, mass, pose)
+        bullets += [Bullet(radius, mass, pose)]
         return bullets
-

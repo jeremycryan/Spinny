@@ -19,9 +19,17 @@ class Game():
         self.framerate = 50
         self.clock = pygame.time.Clock()
 
-        p1weapon = Weapon()
+        p1weapon = Weapon(barrel_length = 50,
+                        mass = 20,
+                        speed = 300,
+                        radius = 20,
+                        rate = 0.5,
+                        angle = 0,
+                        autofire = False,
+                        max_charge = 2,
+                        speed_charge = 100)
         p1movement = ShipMovement(2*math.pi, 30, 0.2)
-        p1shape = ShipShape(50, 30, 50)
+        p1shape = ShipShape(40, 30)
         p1ship = Ship(1, p1weapon, p1movement, p1shape)
         p1pose = Pose(pos = (800.0, 600.0), spin_speed = 2*math.pi)
         p1controls = Controls([pygame.K_q])
@@ -40,7 +48,7 @@ class Game():
             dt = self.clock.tick(50)/1000.0 # time step in seconds
 
             #   Handles player charging and shooting
-            self.player_shooting()
+            self.player_shooting(dt)
 
             #   Updates player positions and angles
             for player in self.players:
@@ -50,14 +58,14 @@ class Game():
             self.screen.render_screen(self)
             self.check_for_exit()
 
-    def player_shooting(self):
+    def player_shooting(self, dt):
         """ Calls players' shoot methods if shoot key is pressed. """
 
         for player in self.players:
             if player.controls.key_down(player.controls.shoot_key):
-                player.charge()
+                player.charge(dt)
             else:
-                player.shoot()
+                player.shoot(dt)
 
     def check_for_exit(self):
         """  Checks to see whether user has exited game. """

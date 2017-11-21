@@ -37,3 +37,6 @@ class Pose:
                             [math.sin(angle), math.cos(angle)]])
         new_direction = rot_mat.dot(self.direction)
         self.direction = new_direction/np.linalg.norm(new_direction)
+
+    def __repr__(self):
+        return("Position: %s, Direction: %s") % (self.pos, self.direction)
