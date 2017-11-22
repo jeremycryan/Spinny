@@ -28,7 +28,7 @@ class Player():
 
     def charge(self, dt):
         """ Charge up weapons. """
-        impulse = np.asarray(0.0, 0.0)
+        impulse = np.asarray((0.0, 0.0))
         for weapon, charge in self.weapons.items():
             self.weapons[weapon] = min(charge+dt, weapon.max_charge)
             if weapon.autofire and charge == weapon.max_charge:
@@ -37,7 +37,7 @@ class Player():
 
     def release(self, dt):
         """ Fire weapons if enough cooldown time has elapsed. """
-        impulse = np.asarray(0.0, 0.0)
+        impulse = np.asarray((0.0, 0.0))
         for weapon, charge in self.weapons.items():
             if charge < 0:
                 self.weapons[weapon] = min(charge+dt,0)

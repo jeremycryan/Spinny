@@ -60,7 +60,7 @@ class Game():
             if player.controls.key_down(player.controls.shoot_key):
                 player.charge(dt)
             else:
-                player.shoot(dt)
+                player.release(dt)
 
     def check_for_exit(self):
         """  Checks to see whether user has exited game. """
