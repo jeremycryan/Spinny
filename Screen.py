@@ -20,11 +20,12 @@ class Screen():
         self.disp.fill((0, 0, 0))
         for player in game.players:
             self.render_player(game.cur_level, player)
+            self.render_bullets(game.cur_level, player)
         self.flip()
 
     def render_player(self, level, player):
         """ Draws a player on the screen.
-        Inputs: player object """
+        Inputs: current level object, player object """
 
         #   Unpack necessary parameters, convert to screen frame
         pos = self.global_pos_to_screen(level, player.pose.pos)
@@ -48,6 +49,24 @@ class Screen():
         body_color = (255, 150, 150)
         pygame.draw.circle(self.disp, body_color, pos, radius)
         pygame.draw.line(self.disp, gun_color, pos, gun_tip_pos, barrel_width)
+
+    def render_bullets(self, level, player):
+        """ Draws all the bullets fired by player on the screen.
+        Input: current level object, player object. """
+
+        #   Iterate through each bullet in list
+        for bullet in player.bullets:
+
+            #   Unpack parameters, convert to screen frame
+            pos = self.global_pos_to_screen(level, bullet.pose.pos)
+            radius = self.global_scale_to_screen(level, bullet.radius)
+
+            #   Cast to ints
+            pos = pos.astype(int)
+            radius = int(radius)
+
+            bullet_color = (200, 200, 200)
+            pygame.draw.circle(self.disp, bullet_color, pos, radius)
 
     def global_pos_to_screen(self, level, pos):
         """ Converts a position in the global frame to one in the screen

@@ -25,7 +25,7 @@ class Game():
                         radius = 20,
                         rate = 0.5,
                         angle = 0,
-                        autofire = False,
+                        autofire = True,
                         max_charge = 2,
                         speed_charge = 100)
         p1movement = ShipMovement(2*math.pi, 30, 0.2)
@@ -33,9 +33,12 @@ class Game():
         p1ship = Ship(1, p1weapon, p1movement, p1shape)
         p1pose = Pose(pos = (800.0, 600.0), spin_speed = 2*math.pi)
         p1controls = Controls([pygame.K_q])
+        p2pose = Pose(pos = (1200.0, 900.0), spin_speed = 2*math.pi)
+        p2controls = Controls([pygame.K_p])
         p1 = Player(1, p1ship, p1controls, p1pose)
+        p2 = Player(2, p1ship, p2controls, p2pose)
 
-        self.players = [p1]
+        self.players = [p1, p2]
         self.cur_level = Level([1280, 960])
 
         self.screen = Screen()

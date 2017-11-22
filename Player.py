@@ -41,7 +41,7 @@ class Player():
             bullets = self.weapon.shoot(self.charge_time, self.pose)
             self.charge_time = -self.weapon.rate
             self.pose.vel = self.get_impulse(bullets)
-            print(bullets)
+            self.bullets += bullets
 
     def get_impulse(self, bullets):
         """ Determine the ship velocity based on the projectiles launched. """
