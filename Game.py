@@ -9,6 +9,7 @@ from Pose import *
 from Screen import *
 from Level import *
 from Weapon import *
+from ShipSelect import *
 
 class Game():
     def __init__(self):
@@ -19,27 +20,18 @@ class Game():
         self.framerate = 50
         self.clock = pygame.time.Clock()
 
-        p1weapon = Weapon(barrel_length = 50,
-                        mass = 20,
-                        speed = 300,
-                        radius = 20,
-                        rate = 0.5,
-                        angle = 0,
-                        autofire = True,
-                        max_charge = 2,
-                        speed_charge = 100)
-        p1movement = ShipMovement(2*math.pi, 30, 0.2)
-        p1shape = ShipShape(40, 30)
-        p1ship = Ship(1, p1weapon, p1movement, p1shape)
-        p1pose = Pose(pos = (800.0, 600.0), spin_speed = 2*math.pi)
+        p1pose = Pose(pos = (200, 200))
         p1controls = Controls([pygame.K_q])
-        p2pose = Pose(pos = (1200.0, 900.0), spin_speed = 2*math.pi)
+        p2pose = Pose(pos = (2000.0, 1200.0))
         p2controls = Controls([pygame.K_p])
-        p1 = Player(1, p1ship, p1controls, p1pose)
-        p2 = Player(2, p1ship, p2controls, p2pose)
+        p3pose = Pose(pos = (200.0, 1200.0))
+        p3controls = Controls([pygame.K_SPACE])
+        p1 = Player(1, SHIP_1, p1controls, p1pose, color=(220, 90, 110))
+        p2 = Player(2, SHIP_2, p2controls, p2pose, color=(120, 210, 150))
+        p3 = Player(3, SHIP_3, p3controls, p3pose, color=(140, 110, 210))
 
-        self.players = [p1, p2]
-        self.cur_level = Level([1280, 960])
+        self.players = [p1, p2, p3]
+        self.cur_level = Level([1280*2, 960*2])
 
         self.screen = Screen()
 

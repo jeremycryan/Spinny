@@ -5,7 +5,7 @@ import math
 import pygame
 
 class Player():
-    def __init__(self, player_id, ship, controls, pose):
+    def __init__(self, player_id, ship, controls, pose, color = (100, 100, 100)):
         #   Define player id
         self.id = player_id
 
@@ -19,8 +19,10 @@ class Player():
         self.ship = ship
         self.weapon = ship.starting_weapon
         self.pose = pose
+        self.pose.spin_speed = ship.spin_speed
         self.charge_time = 0
         self.bullets = []
+        self.color = color
 
     def update(self, dt):
         self.pose.update(dt)

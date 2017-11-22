@@ -45,8 +45,10 @@ class Screen():
 
         #   TODO change color based on player
         #   TODO Use actual sprites
-        gun_color = (200, 100, 100)
-        body_color = (255, 150, 150)
+        gun_color = player.color
+        body_color = (player.color[0] - 50,
+            player.color[1] - 50,
+            player.color[2] - 50)
         pygame.draw.circle(self.disp, body_color, pos, radius)
         pygame.draw.line(self.disp, gun_color, pos, gun_tip_pos, barrel_width)
 
@@ -65,7 +67,7 @@ class Screen():
             pos = pos.astype(int)
             radius = int(radius)
 
-            bullet_color = (200, 200, 200)
+            bullet_color = player.color
             pygame.draw.circle(self.disp, bullet_color, pos, radius)
 
     def global_pos_to_screen(self, level, pos):
