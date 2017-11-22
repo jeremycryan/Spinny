@@ -4,6 +4,8 @@ import numpy as np
 import math
 import pygame
 
+# TODO: Add powerup dictionary
+
 class Player():
     def __init__(self, player_id, ship, controls, pose, color = (100, 100, 100)):
         #   Define player id
@@ -16,39 +18,46 @@ class Player():
         self.ship = ship
         self.weapons = {weapon:0 for weapon in ship.starting_weapons}
         self.pose = pose
-        self.pose.spin_speed = ship.spin_speed
         self.bullets = []
         self.color = color
 
     def update(self, dt):
         """ Update pose by a timestep. """
+        self.pose.spin_speed = self.ship.spin_speed
+        for weapon, charge in self.weapons.items():
+            self.pose.spin_speed *= weapon.spin_charge**charge
         self.pose.update(dt)
         for bullet in self.bullets:
             bullet.update(dt)
 
     def charge(self, dt):
         """ Charge up weapons. """
-        impulse = np.asarray((0.0, 0.0))
+        impulse = np.asarray(0.0, 0.0)
         for weapon, charge in self.weapons.items():
-            self.weapons[weapon] = min(charge+dt, weapon.max_charge)
-            if weapon.autofire and charge == weapon.max_charge:
+            if charge < 0: # Cooldown
+                self.weapons[weapon] = min(charge+dt/weapon.cooldown, 0)
+            elif weapon.charge_time==0: # Non-chargeable
+                self.weapons[weapon] = 1
+            else: # Charging
+                self.weapons[weapon] = min(charge+dt/weapon.charge_time, 1)
+            if weapon.autofire and charge == 1: # Fully charged
                 impulse += self.shoot(weapon)
                 self.pose.vel = impulse
 
     def release(self, dt):
         """ Fire weapons if enough cooldown time has elapsed. """
-        impulse = np.asarray((0.0, 0.0))
+        impulse = np.asarray(0.0, 0.0)
         for weapon, charge in self.weapons.items():
-            if charge < 0:
-                self.weapons[weapon] = min(charge+dt,0)
-            if charge > 0:
+            if charge < 0: # Cooldown
+                self.weapons[weapon] = min(charge+dt/weapon.cooldown, 0)
+            if charge > 0: # Shoot
                 impulse += self.shoot(weapon)
                 self.pose.vel = impulse
 
     def shoot(self, weapon):
         """ Fire a given weapon and return the resultant ship velocity. """
         bullets = weapon.shoot(self.weapons[weapon], self.pose)
-        self.weapons[weapon] = -weapon.rate
+        self.weapons[weapon] = -1
         self.bullets += bullets
         return self.get_impulse(bullets)
 
@@ -58,6 +67,11 @@ class Player():
         for bullet in bullets:
             velocity -= bullet.pose.vel*bullet.mass/self.ship.mass
         return velocity
+
+    def get_max_charge(self):
+        """ Determine the highest charge level of any weapon on the ship.
+        Charge of -1 = cooldown, 0 = uncharged, 1 = fully charged. """
+        return max(self.weapons.values())
 
 class Controls():
     def __init__(self, key_list):
