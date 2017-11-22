@@ -10,40 +10,47 @@ class Player():
         self.id = player_id
 
         #   Define control scheme based on control object
-        #   TODO define control object
         self.controls = controls
 
         #   Define gameplay parameters based on ship and weapon objects
-        #   TODO design ship object
-        #   TODO design weapon object
         self.ship = ship
-        self.weapon = ship.starting_weapon
+        self.weapons = {weapon:0 for weapon in ship.starting_weapons}
         self.pose = pose
         self.pose.spin_speed = ship.spin_speed
-        self.charge_time = 0
         self.bullets = []
         self.color = color
 
     def update(self, dt):
+        """ Update pose by a timestep. """
         self.pose.update(dt)
         for bullet in self.bullets:
             bullet.update(dt)
 
     def charge(self, dt):
-        """ Charge up a weapon. """
-        self.charge_time = min(self.charge_time+dt, self.weapon.max_charge)
-        if self.weapon.autofire and self.charge_time == self.weapon.max_charge:
-            self.shoot(dt)
+        """ Charge up weapons. """
+        impulse = np.asarray(0.0, 0.0)
+        for weapon, charge in self.weapons.items():
+            self.weapons[weapon] = min(charge+dt, weapon.max_charge)
+            if weapon.autofire and charge == weapon.max_charge:
+                impulse += self.shoot(weapon)
+                self.pose.vel = impulse
 
-    def shoot(self, dt):
-        """ Fire a weapon if enough cooldown time has elapsed. """
-        if self.charge_time < 0:
-            self.charge_time = min(self.charge_time+dt,0)
-        if self.charge_time > 0:
-            bullets = self.weapon.shoot(self.charge_time, self.pose)
-            self.charge_time = -self.weapon.rate
-            self.pose.vel = self.get_impulse(bullets)
-            self.bullets += bullets
+    def release(self, dt):
+        """ Fire weapons if enough cooldown time has elapsed. """
+        impulse = np.asarray(0.0, 0.0)
+        for weapon, charge in self.weapons.items():
+            if charge < 0:
+                self.weapons[weapon] = min(charge+dt,0)
+            if charge > 0:
+                impulse += self.shoot(weapon)
+                self.pose.vel = impulse
+
+    def shoot(self, weapon):
+        """ Fire a given weapon and return the resultant ship velocity. """
+        bullets = weapon.shoot(self.weapons[weapon], self.pose)
+        self.weapons[weapon] = -weapon.rate
+        self.bullets += bullets
+        return self.get_impulse(bullets)
 
     def get_impulse(self, bullets):
         """ Determine the ship velocity based on the projectiles launched. """

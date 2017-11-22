@@ -1,13 +1,13 @@
 #!/usr/bin/env python
 
 class Ship():
-    def __init__(self, ship_id, starting_weapon, movement, shape):
+    def __init__(self, ship_id, starting_weapons, movement, shape):
         #   Define ship id
         self.id = ship_id
 
         #   Define weapon based on weapon object
         #   TODO design weapon object
-        self.starting_weapon = starting_weapon
+        self.starting_weapons = starting_weapons
 
         #   Define movement parameters based on movement object
         self.spin_speed = movement.spin_speed
